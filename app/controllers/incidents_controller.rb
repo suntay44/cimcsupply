@@ -11,4 +11,12 @@ class IncidentsController < ApplicationController
   def lists
     @incidents = Incident.all
   end
+
+  def open_incidents
+    @incidents = Incident.all
+  end
+
+  def resolved_incidents
+    @incidents = Incident.all
+  end
 end
