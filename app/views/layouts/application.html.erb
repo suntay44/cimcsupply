@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your App</title>
+  <!-- Include the CSS stylesheet -->
+  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%= turbo_stream_from "sort-toggle" %>
+
+  </head>
+<body class="bg-gray-100">
+  <!-- Include the sidenav -->
+  <%= render 'shared/header' %>
+
+  <!-- Main content -->
+  <div class="flex ml-64 p-8">
+    <%= yield %>
+  </div>
+
+</body>
+</html>

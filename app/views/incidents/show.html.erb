@@ -1,0 +1,10 @@
+<!-- app/views/incidents/show.html.erb -->
+<div class="container mx-auto mt-8">
+  <h1 class="text-2xl font-semibold mb-4"><%= @incident.title %></h1>
+  <p><strong>Description:</strong> <%= @incident.description %></p>
+  <p><strong>Severity:</strong> <%= @incident.severity %></p>
+  <!-- Add more details as needed -->
+
+  <!-- Link to the lists action -->
+  <%= link_to 'View All Incidents', lists_path, class: 'text-blue-500 hover:underline mt-4' %>
+</div>
