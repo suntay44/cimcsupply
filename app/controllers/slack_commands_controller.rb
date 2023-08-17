@@ -17,7 +17,7 @@ class SlackCommandsController < ApplicationController
       description = parts[1]
       severity = parts[2]
 
-      user_oauth_response.conversations_create(name: "incident-#{title.downcase}")
+      response = user_oauth_response.conversations_create(name: "incident-#{title.downcase}")
 
       new_channel_name = response.channel.name
       new_channel_id = response.channel.id
@@ -30,35 +30,32 @@ class SlackCommandsController < ApplicationController
     end
 
   def resolve
-    if channel_name.include? "incident"
-      incident = Incident.find_by(slack_channel_id: channel_id)
+    incident = Incident.find_by(slack_channel_id: channel_id)
   
-      if incident
-        incident.update(status: 'resolved', resolved_at: Time.now)
-        user_oauth_response.conversations_archive(channel: channel_id)
+    if channel_name.include? "incident" and incident
+      incident.update(status: 'resolved', resolved_at: Time.now)
+      user_oauth_response.conversations_archive(channel: channel_id)
 
-        render plain: "Incident resolved in #{TimeDifference.between(Time.now, Incident.last.resolved_at).humanize}"
-      else
-        render plain: "Incident not found or command used in the wrong context."
-      end
+      render plain: "Incident resolved in #{TimeDifference.between(Time.now, Incident.last.resolved_at).humanize}"
     else
       render plain: "This is not an incident channel, resolve error"
     end
   end
 
   def open_ticket
-    if channel.include? "incident"
-      incident = Incident.find_by(title: params_text)
-  
-      if incident
-        incident.update(status: 'open')
-        
-        render plain: "Incident resolved in #{TimeDifference.between(Time.now, Incident.last.resolved_at).humanize}"
-      else
-        render plain: "Incident not found or command used in the wrong context."
-      end
+    incident = Incident.find_by(title: params_text)
+    
+    if incident.nil?
+    incident = Incident.find_by(slack_channel_id: params_text) 
+    end
+
+    if incident
+      incident.update(status: 'open')
+      user_oauth_response.conversations_unarchive(channel: incident.slack_channel_id)
+
+      render plain: "Incident re-opened"
     else
-      render plain: "This is not an incident channel, resolve error"
+      render plain: "No Incident found"
     end
   end
 
