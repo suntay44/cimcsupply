@@ -51,3 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
     navSelected.classList.add("bg-yellow-500", "text-white");
   }
 });
+
+document.addEventListener('turbo:load', function() {
+  const sortLinks = document.querySelectorAll('.sort-link');
+  
+  sortLinks.forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      Turbo.visit(this.getAttribute('href'));
+    });
+  });
+});

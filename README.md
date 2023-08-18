@@ -50,3 +50,7 @@ Welcome to the Rootly project! This guide will help you set up and run the proje
 
   example: /latest_incidents
 ```
+
+For the requirements for Web UI (Go to /lists )
+- Web UI /lists 
+    - List incidents created and being able to sort them alphabetically ASC/DESC ( using turbo ). Tailwind CSS / View components is plus but not required.

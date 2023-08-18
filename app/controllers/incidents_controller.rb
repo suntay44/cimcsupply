@@ -2,6 +2,7 @@ class IncidentsController < ApplicationController
   def index
     counts_graph
     @incidents                = Incident.order(created_at: :desc).limit(5)
+    
     @high_priority_incidents  = Incident.order(created_at: :desc).where(severity: "sev2", status: 'open').limit(5)
     @mid_priority_incidents   = Incident.order(created_at: :desc).where(severity: "sev1", status: 'open').limit(5)
   end
@@ -12,7 +13,15 @@ class IncidentsController < ApplicationController
 
   def lists
     counts_graph
-    @pagy, @incidents = pagy_countless(Incident.order(created_at: :desc), items: 10)
+    column = params[:column] || 'title'
+    direction = params[:direction] || 'asc'
+    @pagy, @incidents = pagy_countless(Incident.order("#{column} #{direction}"), items: 10)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render turbo_stream: turbo_stream.update('sortable-table', partial: 'incidents/lists_table', locals: { incidents: @incidents }) }
+    end
+    
   end
 
   def open_incidents
