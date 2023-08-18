@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Your App</title>
-  <!-- Include the CSS stylesheet -->
+  <title>Rootly</title>
+  <%= favicon_link_tag asset_path('https://assets.rootly.com/assets/logo/rootly-9dcf988d5b67bb83510bbe3c356badb4f89bc40af2297bba68cdd0d0d23cf09e.svg') %>
+
   <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
   <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <%= turbo_stream_from "sort-toggle" %>
 
   </head>
 <body class="bg-gray-100">
-  <!-- Include the sidenav -->
-  <%= render 'shared/header' %>
 
-  <!-- Main content -->
-  <div class="flex ml-64 p-8">
-    <%= yield %>
+  <div class="flex flex-col h-screen bg-gray-100">
+    <%= render 'shared/header' %>
+    <div class="flex-1 flex flex-wrap">
+      <%= render 'shared/sidenav' %>
+      <%= yield %>
+    </div>
   </div>
-
 </body>
 </html>
 

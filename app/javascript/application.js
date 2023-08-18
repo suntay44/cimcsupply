@@ -1,59 +1,51 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 
-const sidebar = document.getElementById('sidebar');
-const labels = sidebar.querySelectorAll('span');
-const buttons = sidebar.querySelectorAll('button');
-function expandSidebar() {
-  const mainContent = document.querySelector('.ml-16');
 
-  if (sidebar.style.width === '16rem') {
-      sidebar.style.width = '4rem';
-      mainContent.style.marginLeft = '4rem';
-      sidebar.classList.remove('text-left', 'px-6');
-      sidebar.classList.add('text-center', 'px-0');
-  } else {
-      sidebar.style.width = '16rem';
-      mainContent.style.marginLeft = '16rem';
-      sidebar.classList.add('text-left', 'px-6');
-      sidebar.classList.remove('text-center', 'px-0');
+var usersChart = new Chart(document.getElementById('usersChart'), {
+  type: 'doughnut',
+  data: {
+      labels: ['Resolved', 'Open Incidents'],
+      datasets: [{
+          data: [30, 65],
+          backgroundColor: ['#f59e0c', '#8B8B8D'],
+      }]
+  },
+  options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+          position: 'bottom'
+      }
   }
+});
 
-  labels.forEach(label => label.classList.toggle('opacity-0'));
-}
+const menuBtn = document.getElementById('menuBtn');
+const sideNav = document.getElementById('sideNav');
 
-function highlightSidebarItem(element) {
-  buttons.forEach(btn => {
-      btn.classList.remove('bg-blue-500', 'text-gray-500', 'text-white', 'w-48', 'ml-0');
-      btn.firstChild.nextSibling.classList.remove('text-white');
-  });
-  element.classList.add('bg-blue-500', 'text-white', 'w-56', 'h-10','ml-0');
-  element.firstChild.nextSibling.classList.add('text-white');
-}
+menuBtn.addEventListener('click', () => {
+  sideNav.classList.toggle('hidden');
+});
 
 document.addEventListener('DOMContentLoaded', function() {
   const currentPath = window.location.pathname;
   if (currentPath === '/') {
-    const homeButton = document.querySelector("#sidebar button:nth-child(1)");
-    if (homeButton) {
-      highlightSidebarItem(homeButton);
-    }
-  }
-  if (currentPath === '/resolved_incidents') {
-    const homeButton = document.querySelector("#sidebar button:nth-child(2)");
-    if (homeButton) {
-      highlightSidebarItem(homeButton);
-    }
+    const navSelected = document.getElementById("home");
+    navSelected.classList.remove("text-gray-500");
+    navSelected.classList.add("bg-yellow-500", "text-white");
   }
   if (currentPath === '/open_incidents') {
-    const homeButton = document.querySelector("#sidebar button:nth-child(3)");
-    if (homeButton) {
-      highlightSidebarItem(homeButton);
-    }
+    const navSelected = document.getElementById("incidents");
+    navSelected.classList.remove("text-gray-500");
+    navSelected.classList.add("bg-yellow-500", "text-white");
   }
-  if (currentPath === '/') {
-    const homeButton = document.querySelector("#sidebar button:nth-child(1)");
-    if (homeButton) {
-      highlightSidebarItem(homeButton);
-    }
+  if (currentPath === '/resolved_incidents') {
+    const navSelected = document.getElementById("resolved");
+    navSelected.classList.remove("text-gray-500");
+    navSelected.classList.add("bg-yellow-500", "text-white");
+  }
+  if (currentPath === '/lists') {
+    const navSelected = document.getElementById("history");
+    navSelected.classList.remove("text-gray-500");
+    navSelected.classList.add("bg-yellow-500", "text-white");
   }
 });

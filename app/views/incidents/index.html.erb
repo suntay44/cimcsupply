@@ -1,13 +1,67 @@
-<!-- app/views/incidents/index.html.erb -->
-<div class="container mx-auto mt-8">
-  <h1 class="text-2xl font-semibold mb-4"><%= @welcome_message %></h1>
-  <h2 class="text-lg font-medium mb-2 ">Latest Incidents</h2>
-  <ul class="list-disc pl-6">
-    <% @incidents.each do |incident| %>
-      <li>
-        <%= link_to incident.title, incident_path(incident) %>
-        (Severity: <%= incident.severity %>)
-      </li>
-    <% end %>
-  </ul>
+<div class="flex-1 p-4 w-full md:w-1/2">
+  <div class="relative max-w-md w-full">
+      <div class="absolute top-1 left-2 inline-flex items-center p-2">
+          <i class="fas fa-search text-gray-400"></i>
+      </div>
+      <input class="w-full h-10 pl-10 pr-4 py-1 text-base placeholder-gray-500 border rounded-full focus:shadow-outline" type="search" placeholder="Search Incident...">
+  </div>
+
+  <div class="mt-8 flex flex-wrap space-x-0 space-y-2 md:space-x-4 md:space-y-0">
+      <div class="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
+          <h2 class="text-yellow-500 text-lg font-semibold pb-1">Daily Statistics</h2>
+          <div class="my-1"></div>
+          <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div> 
+          <div class="chart-container" style="position: relative; height:150px; width:100%">
+              <canvas id="usersChart"></canvas>
+          </div>
+      </div>
+  </div>
+
+  <div class="mt-8 bg-white p-4 shadow rounded-lg">
+      <div class="bg-white p-4 rounded-md mt-4">
+          <h2 class="text-green-500 text-lg font-semibold pb-4">Recent Incidents</h2>
+          <div class="my-1"></div>
+          <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
+          <table class="w-full table-auto text-sm">
+              <thead>
+                  <tr class="text-sm leading-normal">
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Title</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Description</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Severity</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr class="hover:bg-grey-lighter">
+                      <td class="py-2 px-4 border-b border-grey-light">Carlos Sánchez</td>
+                      <td class="py-2 px-4 border-b border-grey-light">27/07/2023</td>
+                      <td class="py-2 px-4 border-b border-grey-light text-right">$1500</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+  <div class="mt-8 bg-white p-4 shadow rounded-lg">
+      <div class="bg-white p-4 rounded-md mt-4">
+          <h2 class="text-red-500 text-lg font-semibold pb-4">High Priority Incidents</h2>
+          <div class="my-1"></div>
+          <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
+          <table class="w-full table-auto text-sm">
+              <thead>
+                  <tr class="text-sm leading-normal">
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Nombre</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Fecha</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Monto</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr class="hover:bg-grey-lighter">
+                      <td class="py-2 px-4 border-b border-grey-light">Carlos Sánchez</td>
+                      <td class="py-2 px-4 border-b border-grey-light">27/07/2023</td>
+                      <td class="py-2 px-4 border-b border-grey-light text-right">$1500</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+    </div>
 </div>

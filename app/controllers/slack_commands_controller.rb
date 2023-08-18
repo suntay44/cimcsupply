@@ -11,18 +11,22 @@ class SlackCommandsController < ApplicationController
     render json: incident_report
   end
   def declare
-      parts = params_text.split(' ').map(&:strip)
+      parts            = params_text.split(' ').map(&:strip)
 
-      title = parts[0]
-      description = parts[1]
-      severity = parts[2]
+      title            = parts.first
+      description      = parts[1..-2].join(" ")
+      severity         = parts.last
 
-      response = user_oauth_response.conversations_create(name: "incident-#{title.downcase}")
+      response         = user_oauth_response.conversations_create(name: "incident-#{title.downcase}", response_url: response_url)
+
+      slack_user       = bot_user_oauth_response.users_info(user: user_id)
+      slack_user_id    = slack_user.user.id
+      slack_user_name  = slack_user.user.real_name
 
       new_channel_name = response.channel.name
-      new_channel_id = response.channel.id
+      new_channel_id   = response.channel.id
   
-      incident = Incident.create(title: title, description: description, severity: severity, status: 'open', slack_channel_id: new_channel_id)
+      incident = Incident.create(title: title, description: description, severity: severity, status: 'open', slack_channel_id: new_channel_id, reporter: "#{slack_user_name}(#{slack_user_id})")
 
       bot_user_oauth_response.chat_postMessage(channel: channel_id, text: "New incident declared: <##{new_channel_id}|incident-#{new_channel_name}>")
   
@@ -69,6 +73,14 @@ class SlackCommandsController < ApplicationController
 
   private def params_text
     params.require(:text)
+  end
+
+  private def user_id
+    params.require(:user_id)
+  end
+
+  private def response_url
+    params.require(:response_url)
   end
   
   private def user_oauth_response
