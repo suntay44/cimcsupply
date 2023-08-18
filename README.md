@@ -1,24 +1,53 @@
-# README
+# Rootly Project
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Welcome to the Rootly project! This guide will help you set up and run the project on your local machine.
 
-Things you may want to cover:
+# Directory
+[Installation](https://github.com/suntay44/rootly/edit/main/README.md#installation)
 
-* Ruby version
+[Slash Commands](https://github.com/suntay44/rootly/edit/main/README.md#slack-app-in-use-slash-commands)
+## Installation
 
-* System dependencies
+1. **Clone the repository from GitHub:**
+```shell
+  git clone https://github.com/suntay44/rootly.git
+  cd rootly
+```
+2. **Install Ruby dependencies using Bundler:**
+ ```shell 
+  bundle install
+```
+3. **Start your Rails server:**
+```shell 
+  rails server
+```
 
-* Configuration
+## Slack App In-Use Slash Commands
 
-* Database creation
+1. **Declare Incident*
+```shell
+  /declare [title] [description-optional] [severity-optional]
 
-* Database initialization
+  example: /declare UserLoggedIn There is an authentication error. sev3
+```
 
-* How to run the test suite
+2. **Resolving Incident*
+```shell
+  /declare [title] [description-optional] [severity-optional]
 
-* Services (job queues, cache servers, search engines, etc.)
+  example: /resolve
+```
+3. **Opening Closed Incident*
+```shell
+  /declare [title] [description-optional] [severity-optional]
 
-* Deployment instructions
+  example: /open_ticket C05NCHM1FAR
+  example: /open_ticket C05NCHM1FAR
+```
 
-* ...
+4. **Listing Recent Incident*
+```shell
+  /declare [title] [description-optional] [severity-optional]
+
+  example: /declare UserLoggedIn There is an authentication error. sev3
+```

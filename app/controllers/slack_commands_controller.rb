@@ -38,26 +38,26 @@ class SlackCommandsController < ApplicationController
   
     if channel_name.include? "incident" and incident
       incident.update(status: 'resolved', resolved_at: Time.now)
+      render plain: "Incident resolved in #{TimeDifference.between(incident.created_at, Time.now).humanize}"
       user_oauth_response.conversations_archive(channel: channel_id)
-
-      render plain: "Incident resolved in #{TimeDifference.between(Time.now, Incident.last.resolved_at).humanize}"
     else
       render plain: "This is not an incident channel, resolve error"
     end
   end
 
   def open_ticket
+    params_text.slice! "incident-"
     incident = Incident.find_by(title: params_text)
-    
+
     if incident.nil?
     incident = Incident.find_by(slack_channel_id: params_text) 
     end
 
     if incident
       incident.update(status: 'open')
-      user_oauth_response.conversations_unarchive(channel: incident.slack_channel_id)
+      response = user_oauth_response.conversations_unarchive(channel: incident.slack_channel_id)
 
-      render plain: "Incident re-opened"
+      render plain: "Incident Re-opened! <##{incident.slack_channel_id}|incident-#{incident.title}>"
     else
       render plain: "No Incident found"
     end
