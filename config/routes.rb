@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   resources :incidents, only: [:index, :show]
   get 'lists', to: 'incidents#lists'
+
+  post 'open_incidents', to: 'incidents#open_incidents'
   get 'open_incidents', to: 'incidents#open_incidents'
+
+  post 'resolved_incidents', to: 'incidents#resolved_incidents'
   get 'resolved_incidents', to: 'incidents#resolved_incidents'
 
   post '/slack_commands/declare', to: 'slack_commands#declare'

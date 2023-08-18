@@ -10,7 +10,7 @@
 
   <div class="mt-8 bg-white p-4 shadow rounded-lg">
       <div class="bg-white p-4 rounded-md mt-4">
-          <h2 class="text-green-500 text-lg font-semibold pb-4">Closed Incidents</h2>
+          <h2 class="text-red-500 text-lg font-semibold pb-4">Open Incidents</h2>
           <div class="my-1"></div>
           <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
           <table class="w-full table-auto text-sm">
@@ -20,25 +20,11 @@
                       <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Description</th>
                       <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Severity</th>
                       <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Reporter</th>
-                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Resolved Date</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Creation Date</th>
                   </tr>
               </thead>
               <tbody>
-              <% @incidents.each do |i| %>
-                <tr class="hover:bg-grey-lighter">
-                    <td class="py-2 px-4 border-b border-grey-light"><%=i.title%></td>
-                    <td class="py-2 px-4 border-b border-grey-light"><%=i.description%></td>
-                      <%if i.severity == "sev2"%>
-                        <td class="py-2 px-4 border-b border-grey-light text-red-500"><%=i.severity%></td>
-                      <%elsif i.severity == "sev1"%>
-                        <td class="py-2 px-4 border-b border-grey-light text-yellow-400"><%=i.severity%></td>
-                      <%else%>
-                        <td class="py-2 px-4 border-b border-grey-light"><%=i.severity%></td>
-                      <%end%>
-                    <td class="py-2 px-4 border-b border-grey-light"><%=i.reporter%></td>
-                    <td class="py-2 px-4 border-b border-grey-light"><%=i.resolved_at.strftime('%B %d, %Y')%></td>
-                </tr>
-              <%end%>
+              <%= render 'open_incidents'%>
               </tbody>
           </table>
       </div>

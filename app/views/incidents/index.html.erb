@@ -8,11 +8,13 @@
 
   <div class="mt-8 flex flex-wrap space-x-0 space-y-2 md:space-x-4 md:space-y-0">
       <div class="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
-          <h2 class="text-yellow-500 text-lg font-semibold pb-1">Daily Statistics</h2>
+          <h2 class="text-yellow-500 text-lg font-semibold pb-1">Total Statistics</h2>
           <div class="my-1"></div>
           <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div> 
           <div class="chart-container" style="position: relative; height:150px; width:100%">
               <canvas id="usersChart"></canvas>
+              <%= hidden_field_tag 'total_count', @total_incidents%>
+              <%= hidden_field_tag 'total_solved', @total_solved_incidents%>
           </div>
       </div>
   </div>
@@ -25,17 +27,27 @@
           <table class="w-full table-auto text-sm">
               <thead>
                   <tr class="text-sm leading-normal">
-                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Title</th>
-                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Description</th>
-                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Severity</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Title</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Description</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Severity</th>
+                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Reporter</th>
                   </tr>
               </thead>
               <tbody>
-                  <tr class="hover:bg-grey-lighter">
-                      <td class="py-2 px-4 border-b border-grey-light">Carlos Sánchez</td>
-                      <td class="py-2 px-4 border-b border-grey-light">27/07/2023</td>
-                      <td class="py-2 px-4 border-b border-grey-light text-right">$1500</td>
-                  </tr>
+                <% @incidents.each do |i| %>
+                    <tr class="hover:bg-grey-lighter">
+                        <td class="py-2 px-4 border-b border-grey-light"><%=i.title%></td>
+                        <td class="py-2 px-4 border-b border-grey-light"><%=i.description%></td>
+                          <%if i.severity == "sev2"%>
+                            <td class="py-2 px-4 border-b border-grey-light text-red-500"><%=i.severity%></td>
+                          <%elsif i.severity == "sev1"%>
+                            <td class="py-2 px-4 border-b border-grey-light text-yellow-400"><%=i.severity%></td>
+                          <%else%>
+                            <td class="py-2 px-4 border-b border-grey-light"><%=i.severity%></td>
+                          <%end%>
+                        <td class="py-2 px-4 border-b border-grey-light"><%=i.reporter%></td>
+                    </tr>
+                <%end%>
               </tbody>
           </table>
       </div>
@@ -49,17 +61,29 @@
           <table class="w-full table-auto text-sm">
               <thead>
                   <tr class="text-sm leading-normal">
-                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Nombre</th>
-                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Fecha</th>
-                      <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Monto</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Title</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Description</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Severity</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Reporter</th>
                   </tr>
               </thead>
               <tbody>
+                <% @high_priority_incidents.each do |i| %>
                   <tr class="hover:bg-grey-lighter">
-                      <td class="py-2 px-4 border-b border-grey-light">Carlos Sánchez</td>
-                      <td class="py-2 px-4 border-b border-grey-light">27/07/2023</td>
-                      <td class="py-2 px-4 border-b border-grey-light text-right">$1500</td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.title%></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.description%></td>
+                      <td class="py-2 px-4 border-b border-grey-light text-red-500"><%=i.severity%></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.reporter%></td>
                   </tr>
+                <%end%>
+                <% @mid_priority_incidents.each do |i| %>
+                  <tr class="hover:bg-grey-lighter">
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.title%></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.description%></td>
+                      <td class="py-2 px-4 border-b border-grey-light text-yellow-400"><%=i.severity%></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.reporter%></td>
+                  </tr>
+                <%end%>
               </tbody>
           </table>
       </div>

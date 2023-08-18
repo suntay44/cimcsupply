@@ -1,13 +1,15 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 
+const total_incidents = document.getElementById('total_count')
+const total_closed_incidents = document.getElementById('total_solved')
 
 var usersChart = new Chart(document.getElementById('usersChart'), {
   type: 'doughnut',
   data: {
       labels: ['Resolved', 'Open Incidents'],
       datasets: [{
-          data: [30, 65],
-          backgroundColor: ['#f59e0c', '#8B8B8D'],
+          data: [total_closed_incidents.value, total_incidents.value],
+          backgroundColor: ['#38a169', '#e53e3e'],
       }]
   },
   options: {
