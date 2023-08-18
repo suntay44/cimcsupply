@@ -33,21 +33,20 @@ Welcome to the Rootly project! This guide will help you set up and run the proje
 
 2. **Resolving Incident*
 ```shell
-  /declare [title] [description-optional] [severity-optional]
+  /resolve
 
   example: /resolve
 ```
 3. **Opening Closed Incident*
 ```shell
-  /declare [title] [description-optional] [severity-optional]
+  /open_ticket [title] [description-optional] [severity-optional]
 
-  example: /open_ticket C05NCHM1FAR
   example: /open_ticket C05NCHM1FAR
 ```
 
 4. **Listing Recent Incident*
 ```shell
-  /declare [title] [description-optional] [severity-optional]
+  /latest_incidents
 
-  example: /declare UserLoggedIn There is an authentication error. sev3
+  example: /latest_incidents
 ```
