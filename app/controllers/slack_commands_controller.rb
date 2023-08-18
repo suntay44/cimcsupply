@@ -1,10 +1,10 @@
 class SlackCommandsController < ApplicationController
   def latest_incidents
-    incidents = Incident.order(created_at: :desc, status: 'open').limit(5)
+    incidents = Incident.order(created_at: :desc).where(status: "open").limit(5)
     incident_report = "Incident Report"
 
     incidents.each do |i|
-      incident_report << "\n Title: #{i.title} \n Description: #{i.description} \n Severity: #{i.severity} \n Channel: <##{i.new_channel_id}|incident-#{title.downcase}>"
+      incident_report << "\n Title: #{i.title} \n Description: #{i.description} \n Severity: #{i.severity} \n Channel: <##{i.slack_channel_id}|incident-#{i.title.downcase}>"
       incident_report << "\n"
     end
 
