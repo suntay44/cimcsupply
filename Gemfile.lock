@@ -173,6 +173,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.15.4-x86_64-linux)
+      racc (~> 1.4)
     pagy (6.0.4)
     pg (1.5.3)
     protocol-hpack (1.4.2)
@@ -252,6 +254,8 @@ GEM
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.30-arm64-darwin)
       railties (>= 6.0.0)
+    tailwindcss-rails (2.0.30-x86_64-linux)
+      railties (>= 6.0.0)
     thor (1.2.2)
     time_difference (0.5.0)
       activesupport
@@ -283,6 +287,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   async-websocket
