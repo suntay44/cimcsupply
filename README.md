@@ -10,47 +10,47 @@ Welcome to the Rootly project! This guide will help you set up and run the proje
 
 1. **Clone the repository from GitHub:**
 ```shell
-  git clone https://github.com/suntay44/rootly.git
-  cd rootly
+git clone https://github.com/suntay44/rootly.git
+cd rootly
 ```
 2. **Install Ruby dependencies using Bundler:**
- ```shell 
-  bundle install
+```shell 
+bundle install
 ```
 3. **Migrate database:**
  ```shell 
-  rake db:migrate
+rake db:migrate
 ```
 4. **Start your Rails server:**
 ```shell 
-  rails server
+rails server
 ```
 
 ## Slack App In-Use Slash Commands
 
 1. **Declare Incident*
 ```shell
-  /declare [title] [description-optional] [severity-optional]
+/declare [title] [description-optional] [severity-optional]
 
-  example: /declare UserLoggedIn There is an authentication error. sev3
+example: /declare UserLoggedIn There is an authentication error. sev3
 ```
 
 2. **Resolving Incident*
 ```shell
-  /resolve
+/resolve
 
   example: /resolve
 ```
 3. **Opening Closed Incident*
 ```shell
-  /open_ticket [title] [description-optional] [severity-optional]
+/open_ticket [title] [description-optional] [severity-optional]
 
   example: /open_ticket C05NCHM1FAR
 ```
 
 4. **Listing Recent Incident*
 ```shell
-  /latest_incidents
+/latest_incidents
 
   example: /latest_incidents
 ```
