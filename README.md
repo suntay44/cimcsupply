@@ -17,7 +17,11 @@ Welcome to the Rootly project! This guide will help you set up and run the proje
  ```shell 
   bundle install
 ```
-3. **Start your Rails server:**
+3. **Migrate database:**
+ ```shell 
+  rake db:migrate
+```
+4. **Start your Rails server:**
 ```shell 
   rails server
 ```
