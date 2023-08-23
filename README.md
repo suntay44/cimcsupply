@@ -32,7 +32,7 @@ rails server
 ```shell
 /declare [title] [description-optional] [severity-optional]
 
-example: /declare UserLoggedIn There is an authentication error. sev3
+  example: /declare UserLoggedIn There is an authentication error. sev3
 ```
 
 2. **Resolving Incident*
