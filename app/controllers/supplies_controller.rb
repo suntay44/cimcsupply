@@ -81,6 +81,7 @@ class SuppliesController < ApplicationController
   def edit_user
     @user = User.find(params[:id])
     @user.name = params[:name]
+    @user.role = params[:role]
     @user.save!
     if @user.save!
       flash[:notice] = "Updated user successfuly!"
