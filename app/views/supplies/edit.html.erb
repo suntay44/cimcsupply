@@ -1,0 +1,41 @@
+<div class="pl-20 mt-10"> <p class="text-green-700"> Updating <%= @supply.name %> <%= ("(#{@supply.brand})").html_safe%> </p>
+  <%= form_with url: "/supply/#{@supply.id}", method: :post do |f| %>
+    <div class="flex flex-row mb-6 mt-10"">
+      <div class="">
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+        <%= f.text_field :name, value: @supply.name, autofocus: true,  class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"%>
+      </div>
+      <div class="ml-5">
+        <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+        <%= f.text_field :brand, value: @supply.brand,  class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"Brand"%>
+      </div>
+      <div class="ml-5">
+        <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+        <%=f.select(:supply_type, options_for_select(Supply.supply_types.map {|k, v| [k.humanize.capitalize, k]},  @supply.supply_type  ), {}, { class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"}) %>
+      </div>
+    </div>
+      <div class="">
+        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+        <%= f.text_field :description, value: @supply.description,class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"Description..."%>
+      </div>
+
+    <div class="flex flex-row mb-6 mt-10">
+      <div class="">
+        <label for="quantity" class="block mb-2 text-sm font-medium text-gray-500 dark:text-white">Stocks (editing value prohibited)</label>
+        <%= f.number_field :quantity, value: @supply.quantity, min:0, disabled: true, class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-400 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"0"%>
+      </div>
+      <div class="ml-5">
+        <label for="expiry" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiry Date</label>
+        <%= f.date_field :expiration, value: @supply.expiration.to_date,min: Date.today + 1.days,  class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"%>
+      </div>
+      <div class="ml-5">
+      <label for="expiry_warning" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiry Warning (Days)</label>
+      <%= f.number_field :expiration_warning, value: @supply.expiration_warning, min:0,  class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"30"%>
+    </div>
+    </div>
+    <%= f.submit "UPDATE", class: "text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-green-700 dark:focus:ring-green-800"%>
+  <% end %>
+  
+  <%= button_to 'Mark as Done', {:action => "mark_as_done", :id => @supply.id}, :method=>:post,class: "mt-6 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-green-700 dark:focus:ring-green-800"  %>
+
+</div>

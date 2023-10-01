@@ -1,64 +1,63 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 
-const total_incidents = document.getElementById('total_count')
-const total_closed_incidents = document.getElementById('total_solved')
+//= require jquery
+//= require jquery_ujs
+//= require quagga
+//= require_tree .
 
-var usersChart = new Chart(document.getElementById('usersChart'), {
-  type: 'doughnut',
-  data: {
-      labels: ['Resolved', 'Open Incidents'],
-      datasets: [{
-          data: [total_closed_incidents.value, total_incidents.value],
-          backgroundColor: ['#38a169', '#e53e3e'],
-      }]
-  },
-  options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      legend: {
-          position: 'bottom'
+function order_by_occurrence(arr) {
+  var counts = {};
+  arr.forEach(function(value){
+      if(!counts[value]) {
+          counts[value] = 0;
       }
-  }
-});
-
-const menuBtn = document.getElementById('menuBtn');
-const sideNav = document.getElementById('sideNav');
-
-menuBtn.addEventListener('click', () => {
-  sideNav.classList.toggle('hidden');
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  const currentPath = window.location.pathname;
-  if (currentPath === '/') {
-    const navSelected = document.getElementById("home");
-    navSelected.classList.remove("text-gray-500");
-    navSelected.classList.add("bg-yellow-500", "text-white");
-  }
-  if (currentPath === '/open_incidents') {
-    const navSelected = document.getElementById("incidents");
-    navSelected.classList.remove("text-gray-500");
-    navSelected.classList.add("bg-yellow-500", "text-white");
-  }
-  if (currentPath === '/resolved_incidents') {
-    const navSelected = document.getElementById("resolved");
-    navSelected.classList.remove("text-gray-500");
-    navSelected.classList.add("bg-yellow-500", "text-white");
-  }
-  if (currentPath === '/lists') {
-    const navSelected = document.getElementById("history");
-    navSelected.classList.remove("text-gray-500");
-    navSelected.classList.add("bg-yellow-500", "text-white");
-  }
-});
-
-document.addEventListener('turbo:load', function() {
-  const sortLinks = document.querySelectorAll('.sort-link');
-  
-  sortLinks.forEach(link => {
-    link.addEventListener('click', function(event) {
-      event.preventDefault();
-      Turbo.visit(this.getAttribute('href'));
-    });
+      counts[value]++;
   });
+
+  return Object.keys(counts).sort(function(curKey,nextKey) {
+      return counts[curKey] < counts[nextKey];
+  });
+}
+
+function load_quagga(){
+  if ($('#barcode-scanner').length > 0 && navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+    var last_result = [];
+    if (Quagga.initialized == undefined) {
+      Quagga.onDetected(function(result) {
+        var last_code = result.codeResult.code;
+        last_result.push(last_code);
+        if (last_result.length > 20) {
+          code = order_by_occurrence(last_result)[0];
+          last_result = [];
+          Quagga.stop();
+          $.ajax({
+            type: "POST",
+            url: '/get_barcode',
+            data: { upc: code }
+          });
+        }
+      });
+    }
+
+    Quagga.init({
+      inputStream : {
+        name : "Live",
+        type : "LiveStream",
+        numOfWorkers: navigator.hardwareConcurrency,
+        target: document.querySelector('#barcode-scanner')  
+      },
+      decoder: {
+          readers : ['ean_reader','ean_8_reader','code_39_reader','code_39_vin_reader','codabar_reader','upc_reader','upc_e_reader']
+      }
+    },function(err) {
+        if (err) { console.log(err); return }
+        Quagga.initialized = true;
+        Quagga.start();
+    });
+
+  }
+};
+if($('#barcode-scanner').length > 0){
+document.addEventListener("DOMContentLoaded", function(){
+  load_quagga();
 });
+}

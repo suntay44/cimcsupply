@@ -1,4 +1,5 @@
 class IncidentsController < ApplicationController
+
   def index
     counts_graph
     @incidents                = Incident.order(created_at: :desc).limit(5)
@@ -19,7 +20,7 @@ class IncidentsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream { render turbo_stream: turbo_stream.update('sortable-table', partial: 'incidents/lists_table', locals: { incidents: @incidents }) }
+      format.turbo_stream { render turbo_stream: turbo_stream.update('sortable-table', partial: 'incidents/admin_view', locals: { incidents: @incidents }) }
     end
     
   end

@@ -1,0 +1,123 @@
+<div class="flex-1 p-4 w-full md:w-1/2">
+  <div class="mt-3 bg-white p-4 shadow rounded-lg">
+    <div class="bg-white p-4 rounded-md mt-4">
+        <h2 class="text-green-500 text-lg font-semibold pb-4">Recently Added</h2>
+        <div class="my-1"></div>
+        <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
+        <table class="w-full table-auto text-sm">
+            <thead>
+                <tr class="text-sm leading-normal">
+                  <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Name</th>
+                  <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Brand</th>
+                  <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Description</th>
+                  <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Initial Stocks</th>
+                  <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Expiration Date</th>              
+                </tr>
+            </thead>
+            <tbody>
+              <% @supplies.each do |i| %>
+                  <tr class="hover:bg-grey-lighter">
+                      <td class="py-2 px-4 border-b border-grey-light underline text-blue-500 hover:text-blue-700"><%= link_to i.name, "/supply/#{i.id}" %></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.brand%></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=h truncate(i.description, length: 50) %> </td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.initial_quantity%>
+                      </td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.expiration.strftime("%B #{i.expiration.day.ordinalize}, %Y")%></td>
+                  </tr>
+              <%end%>
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+
+  <div class="mt-8 bg-white p-4 shadow rounded-lg">
+      <div class="bg-white p-4 rounded-md mt-4">
+          <h2 class="text-yellow-500 text-lg font-semibold pb-4"><i class="fas fa-stopwatch mr-2 text-yellow-500"></i>Expiring Medicines</h2>
+          <div class="my-1"></div>
+          <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
+          <table class="w-full table-auto text-sm">
+              <thead>
+                  <tr class="text-sm leading-normal">
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Name</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Brand</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Description</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Current Stocks</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Expiration Date</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <% @warning_expiration.each do |i| %>
+                  <%if i.is_expiring? %>
+                    <tr class="hover:bg-grey-lighter">
+                      <td class="py-2 px-4 border-b border-grey-light underline text-blue-500 hover:text-blue-700"><%= link_to i.name, "/supply/#{i.id}" %></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.brand%></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=h truncate(i.description, length: 50) %> </td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.quantity%>
+              
+                      </td>
+                      <td class="py-2 px-4 border-b border-grey-light">
+                        <%if i.is_expiring?%>
+                        <i class="fas fa-triangle-exclamation mr-2 text-red-500"></i>
+                        <%end%>
+                        <%=i.expiration.strftime("%B #{i.expiration.day.ordinalize}, %Y")%>
+                      </td>
+
+                      <%if i.is_expiring?%>
+                        <td class="py-2 px-4 border-b border-grey-light text-red-500"> <i class="fas fa-triangle-exclamation text-red-500"></i>Warning </td>
+                      <%else%>
+                        <td class="py-2 px-4 border-b border-grey-light text-green-600">Healthy</td>
+                      <%end%>
+                    </tr>
+                  <%end%>
+                <%end%>
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+  <div class="mt-8 bg-white p-4 shadow rounded-lg">
+      <div class="bg-white p-4 rounded-md mt-4">
+          <h2 class="text-red-500 text-lg font-semibold pb-4"><i class="fas fa-cubes mr-2 text-red-500"></i>Supply Critical Level</h2>
+          <div class="my-1"></div>
+          <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
+          <table class="w-full table-auto text-sm">
+              <thead>
+                  <tr class="text-sm leading-normal">
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Name</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Brand</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Description</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Current Stocks</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Expiration Date</th>
+                    <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <% @critical_supply.each do |i| %>
+                  <%if i.is_critical_supply? || i.quantity <= 1 %>
+                    <tr class="hover:bg-grey-lighter">
+                      <td class="py-2 px-4 border-b border-grey-light underline text-blue-500 hover:text-blue-700"><%= link_to i.name, "/supply/#{i.id}" %></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.brand%></td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=h truncate(i.description, length: 50) %> </td>
+                      <td class="py-2 px-4 border-b border-grey-light">
+                      <%if i.is_critical_supply? || i.quantity <= 1 %>
+                        <i class="fas fa-triangle-exclamation mr-2 text-red-500"></i>
+                        <%end%>
+                        <%=i.quantity%>    
+                      </td>
+                      <td class="py-2 px-4 border-b border-grey-light"><%=i.expiration.strftime("%B #{i.expiration.day.ordinalize}, %Y")%></td>
+
+                      <%if i.is_critical_supply? || i.quantity <= 1 %>
+                        <td class="py-2 px-4 border-b border-grey-light text-red-500"> <i class="fas fa-triangle-exclamation text-red-500"></i>Warning </td>
+                      <%else%>
+                        <td class="py-2 px-4 border-b border-grey-light text-green-600">Healthy</td>
+                      <%end%>
+                    </tr>
+                  <%end%>
+                <%end%>
+              </tbody>
+          </table>
+      </div>
+    </div>
+</div>

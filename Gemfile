@@ -29,6 +29,9 @@ gem "heroicon"
 gem 'slack-ruby-client'
 gem 'async-websocket'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
 gem 'time_difference'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
@@ -36,7 +39,8 @@ gem "stimulus-rails"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
-
+gem "jquery-rails"
+gem "devise"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
 

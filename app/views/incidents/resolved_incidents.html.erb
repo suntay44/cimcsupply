@@ -43,7 +43,7 @@
           </table>
       </div>
       <div id="next_link" class="flex space-x-3" >
-        <%= button_to "<<", pagy_url_for(@pagy, @pagy.prev), {class: "block py-1 px-2 my-1 rounded transition duration-200 bg-yellow-500 text-white"} %>
+        <%= button_to "<", pagy_url_for(@pagy, @pagy.prev), {class: "block py-1 px-2 my-1 rounded transition duration-200 bg-yellow-500 text-white"} %>
         <%= button_to ">>", pagy_url_for(@pagy, @pagy.next), {class: "block py-1 px-2 my-1 rounded transition duration-200 bg-yellow-500 text-white"} %>
       </div>
   </div>

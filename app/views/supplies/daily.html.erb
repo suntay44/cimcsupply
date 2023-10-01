@@ -1,0 +1,92 @@
+<div>
+<h1 style="text-align:center;text-transform:capitalize;"><%= @type_of_report%> User Action Report </h1>
+
+
+<table style="margin-left: auto;margin-right: auto;">
+  <thead>
+      <tr>
+        <th style="padding-right:10px;">Name</th>
+        <th style="padding-right:10px;">Action</th>
+        <th style="padding-right:10px;">Stocks Left</th>    
+        <th style="padding-right:10px;">Date</th>   
+        <th style="padding-right:10px;">Requested By</th>           
+      </tr>
+  </thead>
+  <tbody>
+    <% @user_actions.each do |i| %>
+      <tr style="text-align:center">
+          <td style="color:red;padding-right:5px;"><%=i.user.name%></td>
+          <td style="padding-right:10px;"><%=i.action%></td>
+          <%if i.action.include?("Created")%>
+          <td style="padding-right:10px;"><%=i.ended_quantity%></td>
+          <%else%>
+          <td style="padding-right:10px;"><%=i.ended_quantity%></td>
+          <%end%>
+          <td style="padding-right:10px;"><%=i.created_at.strftime("%B #{i.created_at.day.ordinalize}, %Y %I:%S %p")%></td>
+          <%if i.department_id.present?%>
+          <td style="padding-right:10px;"><%=Department.find(i.department_id).name%></td>
+          <%else%>
+          <%end%>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+</div>
+
+<div style="padding-top:50px;">
+<h1 style="text-align:center;text-transform:capitalize;"><%= @type_of_report%> Medical Supply Report </h1>
+
+
+<table style="margin-left: auto;margin-right: auto;">
+  <thead>
+      <tr >
+      <th style="padding-right:10px;">Name</th>
+      <th style="padding-right:10px;">Brand</th>
+      <th style="padding-right:10px;">Stocks Left</th>
+      <th style="padding-right:10px;">Status</th>       
+      </tr>
+  </thead>
+  <tbody>
+    <% @medical_supplies.each do |i| %>
+      <tr style="text-align:center">
+          <td style="padding-right:10px;"><%=i.name%></td>
+          <td style="padding-right:10px;"><%=i.brand%></td>
+          <td style="padding-right:10px;"><%=i.quantity%></td>
+          <%if i.is_critical_supply? || i.quantity <= 1 %>
+          <td style="padding-right:10px;color:red;"> <i class="fas fa-triangle-exclamation text-red-500"></i>Warning </td>
+        <%else%>
+          <td style="padding-right:10px;">Healthy</td>
+        <%end%>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+</div>
+
+<div style="padding-top:50px;">
+<h1 style="text-align:center;text-transform:capitalize;"><%= @type_of_report%> Medicine Supply Report </h1>
+
+
+<table style="margin-left: auto;margin-right: auto;">
+  <thead>
+      <tr>
+      <th style="padding-right:10px;">Name</th>
+      <th style="padding-right:10px;">Brand</th>
+      <th style="padding-right:10px;">Stocks Left:</th>
+      <th style="padding-right:10px;">Expiration Date</th>
+      <th style="padding-right:10px;">Status</th>       
+      </tr>
+  </thead>
+  <tbody>
+    <% @medicine_supply.each do |i| %>
+      <tr style="text-align:center">
+          <td style="padding-right:10px;"><%=i.name %></td>
+          <td style="padding-right:10px;"><%=i.brand%></td>
+          <td style="padding-right:10px;"><%=i.quantity%></td>
+          <td style="padding-right:10px;"><%=i.expiration.strftime("%B #{i.expiration.day.ordinalize}, %Y %I:%S %p")%></td>
+          <td style="padding-right:10px;"><%=(i.expiration.to_date - DateTime.now.to_date).to_i%> Days left</td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+</div>

@@ -81,6 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: slack_bot_rootly_production
-  username: slack_bot_rootly
-  password: <%= ENV["SLACK_BOT_ROOTLY_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>

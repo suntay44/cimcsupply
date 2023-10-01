@@ -1,24 +1,32 @@
 <div class="p-2 bg-white w-full md:w-60 flex flex-col md:flex hidden" id="sideNav">
     <nav>
-        <a id="home" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-yellow-500  hover:text-white" href="/">
+        <a id="home" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-blue-500  hover:text-white" href="/">
             <i class="fas fa-home mr-2"></i> Home
         </a>
-        <a id="incidents" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-yellow-500  hover:text-white" href="/open_incidents">
-            <i class="fas fa-file-alt mr-2"></i> Incidents
+        <a id="dailyreport" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-blue-500  hover:text-white" href="/daily_report">
+            <i class="fas fa-file-alt mr-2"></i> Daily Report
         </a>
-        <a id="resolved" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-yellow-500  hover:text-white" href="/resolved_incidents">
-            <i class="fas fa-users mr-2"></i>Closed Incidents
+        <a id="medical_supplies" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-blue-500  hover:text-white" href="/medical_supplies">
+            <i class="fas fa-house-medical mr-2"></i>Inventory Supply
         </a>
-        <a id="history" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-yellow-500 hover:text-white" href="/lists">
-            <i class="fas fa-store mr-2"></i> History
+        <a id="medicines" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-blue-500  hover:text-white" href="/medicines">
+            <i class="fas fa-capsules mr-2"></i>Inventory Medicine
+        </a>
+        <a id="export_reports" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-blue-500  hover:text-white" href="/export_reports">
+            <i class="fas fa-download mr-2"></i><%= "Export Today's report".html_safe %>
+        </a>
+
+        <a id="new_supply" class="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-blue-500  hover:text-white" href="/new">
+            <i class="fas fa-cart-plus mr-2"></i>New Supply
         </a>
     </nav>
-
-    <a class="block text-gray-500 py-2.5 px-4 my-2 rounded transition duration-200 hover:bg-yellow-500 hover:text-white mt-auto" href="#">
-        <i class="fas fa-sign-out-alt mr-2"></i> Logout
-    </a>
-    <div class="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mt-2"></div>
-    <p class="mb-1 px-5 py-3 text-left text-xs text-cyan-500">Christian Patrick Suntay@2023</p>
-
+    <div class="mt-auto"> 
+    <% if user_signed_in? %>
+        <%= link_to destroy_user_session_path, :method => :get , class: "block text-red-500 py-2.5 px-4 my-2 rounded transition duration-200 hover:bg-yellow-500 hover:text-white" do %> 
+        <i class="fas fa-sign-out-alt mr-2"></i> Sign Out
+        <%end%>
+    <%end%>
+    <p class="mb-1 px-4 py-3 text-left text-xs text-cyan-500" style="margin-top:-20px">Inventory Monitoring @ 2023</p>
+    </div>
 </div>
 

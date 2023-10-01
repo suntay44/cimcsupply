@@ -7,23 +7,37 @@
 
     <div class="bg-white text-white shadow w-full p-2 flex items-center justify-between">
         <div class="flex items-center">
+      
             <div class="flex items-center"> 
-              <img src="https://assets.rootly.com/assets/logo/rootly-9dcf988d5b67bb83510bbe3c356badb4f89bc40af2297bba68cdd0d0d23cf09e.svg" alt="Logo" class="w-28 h-18 mr-2">
+              <span class="ml-10 text-gray-500"><%= current_user.name if user_signed_in? %>   </span>
+              <span class="ml-1 text-green-500"><%= notice if notice %> 
+              <span class="ml-1 text-red-500"><%= alert if alert %> 
+              </span>
             </div> 
-            <div class="md:hidden flex items-center">
-                <button id="menuBtn">
-                    <i class="fas fa-bars text-gray-500 text-lg"></i>
-                </button>
-            </div>
-        </div>
-        <div class="space-x-5">
-          <button>
-            <span class="fa-stack" data-count="28">
-              <i class="fas fa-circle text-yellow-500  fa-stack-2x"></i>
-              <i class="fa fa-bell fa-stack-1x fa-inverse"></i>
-            </span>
+              <div class="md:hidden flex items-center ml-2" style="margin-right:-15px">
+          <button id="menuBtn">
+              <i class="fas fa-bars text-gray-500 text-lg"></i>
           </button>
         </div>
+        </div>
+        <div class="space-x-5 grid grid-rows-1 grid-flow-col gap-2">
+          <div>
+            <a id="scan" class="block text-white bg-red-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-red-600 hover:text-white" href="/scan">
+                <i class="fas fa-magnifying-glass-plus mr-2"></i>Scan
+            </a>
+          </div>
+          <div>
+            <a id="dispense" class="block text-white bg-yellow-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-yellow-600 hover:text-white" href="/dispense">
+                <i class="fas fa-square-minus mr-2"></i>Dispense
+            </a>
+          </div>
+          <div style="margin-left:-5px; margin-right:5px;">
+            <a id="restock" class="block text-white bg-green-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-green-600 hover:text-white" href="/restock">
+                <i class="fas fa-square-plus mr-2"></i>Restock
+            </a>
+          </div>
+        </div>
+        
     </div>
 </body>
 </html>

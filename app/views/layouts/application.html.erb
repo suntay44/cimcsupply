@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rootly</title>
+  <title>CIMC</title>
   <%= favicon_link_tag asset_path('https://assets.rootly.com/assets/logo/rootly-9dcf988d5b67bb83510bbe3c356badb4f89bc40af2297bba68cdd0d0d23cf09e.svg') %>
 
   <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
   <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <%= turbo_frame_tag 'sortable-table' %>
@@ -25,3 +24,4 @@
 </html>
 
 <%= javascript_include_tag 'application' %>
+<%= javascript_include_tag 'header' %>

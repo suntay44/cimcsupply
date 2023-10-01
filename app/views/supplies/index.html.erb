@@ -1,0 +1,9 @@
+<%if user_signed_in? %>
+  <%if current_user.admin?%>
+    <%= render 'supplies/admin_view', supplies: @supplies %>
+  <%else%>
+    <% controller.redirect_to '/new' %>
+  <%end%>
+<%else%>
+NO VIEW AVAILABLE. NOT AUTHORIZED!
+<%end%>
