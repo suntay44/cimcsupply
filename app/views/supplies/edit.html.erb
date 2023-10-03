@@ -24,7 +24,19 @@
         <label for="quantity" class="block mb-2 text-sm font-medium text-gray-500 dark:text-white">Stocks (editing value prohibited)</label>
         <%= f.number_field :quantity, value: @supply.quantity, min:0, disabled: true, class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-400 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"0"%>
       </div>
+
       <div class="ml-5">
+      <label for="quantity" class="block mb-2 text-sm font-medium text-gray-500 dark:text-white">Box Quantity (editing value prohibited)</label>
+      <%= f.number_field :quantity, value: @supply.box_quantity, min:0, disabled: true, class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-400 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"0"%>
+      </div>
+
+      <div class="ml-5">
+        <label for="quantity" class="block mb-2 text-sm font-medium text-gray-500 dark:text-white">Quantity Per Piece/Box (editing value prohibited)</label>
+        <%= f.number_field :quantity, value: @supply.qty_per_box, min:0, disabled: true, class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-400 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"0"%>
+      </div>
+    </div>
+    <div class="flex flex-row mb-6 mt-10">
+      <div class="">
         <label for="expiry" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiry Date</label>
         <%= f.date_field :expiration, value: @supply.expiration.to_date,min: Date.today + 1.days,  class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"%>
       </div>
@@ -32,6 +44,10 @@
       <label for="expiry_warning" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiry Warning (Days)</label>
       <%= f.number_field :expiration_warning, value: @supply.expiration_warning, min:0,  class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"30"%>
     </div>
+    <div class="ml-5">
+    <label for="barcode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Barcode</label>
+    <%= f.text_field :upc, value: @supply.upc,  class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"%>
+  </div>
     </div>
     <%= f.submit "UPDATE", class: "text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-green-700 dark:focus:ring-green-800"%>
   <% end %>

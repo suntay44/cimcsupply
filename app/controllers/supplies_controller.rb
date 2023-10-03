@@ -4,22 +4,36 @@ class SuppliesController < ApplicationController
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token
   def index
-    @supplies = Supply.order(created_at: :desc)
-    @warning_expiration = Supply.where(supply_type: "medicine")
-    @critical_supply = Supply.order(quantity: :asc, expiration: :asc)
+    @supplies = Supply.order(created_at: :desc).limit(10)
+    @warning_expiration = Supply.where(supply_type: "medicine").limit(15)
+    @critical_supply = Supply.order(quantity: :asc, expiration: :asc).limit(15)
   end
   def new
     @supply = Supply.new
     @supply = params[:upc]
   end
+
+  def quantity_choose
+
+  end
+
   def create
     @supply = Supply.new(supply_params)
     @supply.user = current_user
-    @supply.initial_quantity = params[:quantity]
+    if params[:qty_per_box].present? && params[:box_quantity].present?
+      @supply.initial_quantity = params[:qty_per_box].to_i * params[:box_quantity].to_i
+      @supply.quantity = params[:qty_per_box].to_i * params[:box_quantity].to_i
+    else
+      @supply.initial_quantity = params[:quantity]
+    end
     
     if @supply.save
       @user_action = UserAction.new
-      @user_action.action = "Created #{@supply.initial_quantity}pc of #{@supply.name} (#{@supply.brand})"
+      if params[:qty_per_box].present? && params[:box_quantity].present?
+        @user_action.action = "Created #{@supply.box_quantity} box, #{@supply.qty_per_box}pcs per box, #{@supply.name} (#{@supply.brand})"
+      else
+        @user_action.action = "Created #{@supply.initial_quantity}pc of #{@supply.name} (#{@supply.brand})"
+      end
       @user_action.user = current_user
       @user_action.supply = @supply
       @user_action.dispense = params[:deduction]
@@ -146,31 +160,61 @@ class SuppliesController < ApplicationController
 
   def dispense_supply
     @supply = Supply.find(params[:id])
-    if params[:deduction].to_i >= @supply.quantity
-      flash[:alert] = "Cannot deduct more than the quantity"
-      redirect_back fallback_location: root_path
-    else
-      @supply.quantity = @supply.quantity - params[:deduction].to_i
-      @supply.save!
-      @user_action = UserAction.new
-      if params[:deduction].to_i == 1
-        @user_action.action = "Deduct #{params[:deduction]}pc of #{@supply.name} (#{@supply.brand})"
-      else
-        @user_action.action = "Deduct #{params[:deduction]}pcs of #{@supply.name} (#{@supply.brand})"
-      end
-      @user_action.user = current_user
-      @user_action.supply = @supply
-      @user_action.dispense = params[:deduction]
-      @user_action.user = current_user
-      @user_action.ended_quantity = @supply.quantity
-      @user_action.department_id = params[:department]
-      @user_action.save!
-      if @user_action.save
-        flash[:alert] = "Sucessfully deduct #{params[:deduction]}pcs. Stock Left: #{@supply.quantity}"
+    if @supply.box_quantity.present?
+      if params[:box_qty_deduction].to_i > @supply.box_quantity
+        flash[:alert] = "Cannot deduct more than the quantity"
         redirect_back fallback_location: root_path
       else
-        render :new, status: :unprocessable_entity
+        @supply.box_quantity = @supply.box_quantity - params[:box_qty_deduction].to_i
+        @supply.quantity = @supply.quantity - params[:box_qty_deduction].to_i * @supply.qty_per_box
+        @supply.save!
+        @user_action = UserAction.new
+          if params[:box_qty_deduction].to_i <= 1
+            @user_action.action = "Deduct #{params[:box_qty_deduction]}box of #{@supply.name} (#{@supply.brand})"
+          else
+            @user_action.action = "Deduct #{params[:deduction]}boxes of #{@supply.name} (#{@supply.brand})"
+          end
+          @user_action.user = current_user
+          @user_action.supply = @supply
+          @user_action.dispense = params[:box_qty_deduction].to_i
+          @user_action.user = current_user
+          @user_action.ended_quantity = @supply.quantity
+          @user_action.department_id = params[:department]
+          @user_action.save!
+          if @user_action.save
+            flash[:alert] = "Sucessfully deduct #{params[:deduction]}box. Stock Left: #{@supply.quantity}"
+            redirect_back fallback_location: root_path
+          else
+            render :new, status: :unprocessable_entity
+          end
       end
+    else
+        if params[:deduction].to_i >= @supply.quantity
+          flash[:alert] = "Cannot deduct more than the quantity"
+          redirect_back fallback_location: root_path
+        else
+          @supply.quantity = @supply.quantity - params[:deduction].to_i
+          @supply.save!
+          @user_action = UserAction.new
+          if params[:deduction].to_i == 1
+            @user_action.action = "Deduct #{params[:deduction]}pc of #{@supply.name} (#{@supply.brand})"
+          else
+            @user_action.action = "Deduct #{params[:deduction]}pcs of #{@supply.name} (#{@supply.brand})"
+          end
+          @user_action.user = current_user
+          @user_action.supply = @supply
+          @user_action.dispense = params[:deduction]
+          @user_action.user = current_user
+          @user_action.ended_quantity = @supply.quantity
+          @user_action.department_id = params[:department]
+          @user_action.save!
+          if @user_action.save
+            flash[:alert] = "Sucessfully deduct #{params[:deduction]}pcs. Stock Left: #{@supply.quantity}"
+            redirect_back fallback_location: root_path
+          else
+            render :new, status: :unprocessable_entity
+          end
+        end
     end
   end
 
@@ -189,25 +233,49 @@ class SuppliesController < ApplicationController
 
   def restock_supply
     @supply = Supply.find(params[:id])
-    @supply.quantity = @supply.quantity + params[:deduction].to_i
-    @supply.save!
-    @user_action = UserAction.new
-    if params[:deduction].to_i == 1
-    @user_action.action = "Added #{params[:deduction]}pc of #{@supply.name} (#{@supply.brand})"
+    if @supply.box_quantity.present?
+      @supply.box_quantity = @supply.box_quantity + params[:box_qty_restock].to_i
+      @supply.quantity = @supply.quantity + params[:box_qty_restock].to_i * @supply.qty_per_box
+      @supply.save!
+      @user_action = UserAction.new
+        if params[:box_qty_restock].to_i <= 1
+          @user_action.action = "Added #{params[:box_qty_restock]}box of #{@supply.name} (#{@supply.brand})"
+        else
+          @user_action.action = "Added #{params[:box_qty_restock]}boxes of #{@supply.name} (#{@supply.brand})"
+        end
+        @user_action.user = current_user
+        @user_action.supply = @supply
+        @user_action.dispense = params[:box_qty_restock].to_i
+        @user_action.user = current_user
+        @user_action.ended_quantity = @supply.quantity
+        @user_action.save!
+        if @user_action.save
+          flash[:alert] = "Sucessfully added #{params[:deduction]}pcs. Stock Left: #{@supply.quantity}"
+          redirect_back fallback_location: root_path
+        else
+          render :new, status: :unprocessable_entity
+        end
     else
-    @user_action.action = "Added #{params[:deduction]}pcs of #{@supply.name} (#{@supply.brand})"
-    end
-    @user_action.user = current_user
-    @user_action.supply = @supply
-    @user_action.dispense = params[:deduction]
-    @user_action.user = current_user
-    @user_action.ended_quantity = @supply.quantity
-    @user_action.save!
-    if @user_action.save
-      flash[:alert] = "Sucessfully added #{params[:deduction]}pcs. Stock Left: #{@supply.quantity}"
-      redirect_back fallback_location: root_path
-    else
-      render :new, status: :unprocessable_entity
+      @supply.quantity = @supply.quantity + params[:deduction].to_i
+      @supply.save!
+      @user_action = UserAction.new
+      if params[:deduction].to_i == 1
+        @user_action.action = "Added #{params[:deduction]}pc of #{@supply.name} (#{@supply.brand})"
+      else
+        @user_action.action = "Added #{params[:deduction]}pcs of #{@supply.name} (#{@supply.brand})"
+      end
+      @user_action.user = current_user
+      @user_action.supply = @supply
+      @user_action.dispense = params[:deduction]
+      @user_action.user = current_user
+      @user_action.ended_quantity = @supply.quantity
+      @user_action.save!
+      if @user_action.save
+        flash[:alert] = "Sucessfully added #{params[:deduction]}pcs. Stock Left: #{@supply.quantity}"
+        redirect_back fallback_location: root_path
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
@@ -306,6 +374,6 @@ class SuppliesController < ApplicationController
   private
 
   def supply_params
-    params.permit(:name, :brand, :description, :quantity, :expiration, :expiration_warning, :supply_type, :initial_quantity)
+    params.permit(:name, :brand, :description, :quantity, :expiration, :expiration_warning, :supply_type, :initial_quantity, :box_quantity, :qty_per_box, :upc)
   end
 end

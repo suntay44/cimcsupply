@@ -34,7 +34,7 @@
                     <td class="py-2 px-4 border-b border-grey-light"><%=i.brand%></td>
                     <td class="py-2 px-4 border-b border-grey-light"><%=i.description%></td>
                     <td class="py-2 px-4 border-b border-grey-light"><%=i.quantity%></td>
-                    <td class="py-2 px-4 border-b border-grey-light"><%=i.expiration.strftime("%B #{i.expiration.day.ordinalize}, %Y")%></td>
+                    <td class="py-2 px-4 border-b border-grey-light"><%=i.expiration.strftime("%B #{i.expiration.day.ordinalize}, %Y %I:%S %p")%></td>
                     <td class="py-2 px-4 border-b border-grey-light"><%=(i.expiration.to_date - DateTime.now.to_date).to_i%> Days left</td>
                     
                 </tr>

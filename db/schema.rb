@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_01_025519) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_03_182431) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_01_025519) do
     t.integer "initial_quantity"
     t.string "status"
     t.string "upc"
+    t.integer "box_quantity"
+    t.integer "qty_per_box"
   end
 
   create_table "user_actions", force: :cascade do |t|

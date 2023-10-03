@@ -4,14 +4,22 @@
     <h2 class="text-green-500 text-lg font-semibold pb-4"><i class="fas  fa-square-plus mr-2"></i> Restocking</h2>  
     <%= @supply.name %> 
     </br>
-    Stocks: <span class="text-red-500"><%= @supply.quantity %></span>
+    Stocks: <span class="text-red-500"><%= @supply.quantity %></span></br>
+    Boxes: <span class="text-red-500"><%= @supply.box_quantity %></span> (<%= @supply.qty_per_box%>pcs/box)
   
     <%= form_with url: "/restock/#{@supply.id}", method: :post do |f| %>
       <div class="flex flex-row mb-6 mt-10"">
+      <%if @supply.box_quantity.present? %>
         <div class="ml-5">
-        <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dispensing Quantity</label>
-        <%= f.number_field :deduction, min:0, required: true, class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"0"%>
-      </div>
+          <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Restocking Box Quantity</label>
+          <%= f.number_field :box_qty_restock, min:0, required: true, class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"0"%>
+        </div>
+      <%else%>
+        <div class="ml-5">
+          <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Restocking Quantity</label>
+          <%= f.number_field :deduction, min:0, required: true, class:"shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light", placeholder:"0"%>
+        </div>
+      <%end%>
       </div>
       
       <%= f.submit "Restock", class: "text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800"%>

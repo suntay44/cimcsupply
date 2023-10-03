@@ -51,12 +51,16 @@
       <tr style="text-align:center">
           <td style="padding-right:10px;"><%=i.name%></td>
           <td style="padding-right:10px;"><%=i.brand%></td>
-          <td style="padding-right:10px;"><%=i.quantity%></td>
+          <%if i.box_quantity.present? %>
+            <td style="padding-right:10px;"><%=i.quantity%>(<%=i.box_quantity%>box: <%=i.qty_per_box%>pcs/box)</td>
+          <%else%>
+            <td style="padding-right:10px;"><%=i.quantity%></td>
+          <%end%>
           <%if i.is_critical_supply? || i.quantity <= 1 %>
-          <td style="padding-right:10px;color:red;"> <i class="fas fa-triangle-exclamation text-red-500"></i>Warning </td>
-        <%else%>
-          <td style="padding-right:10px;">Healthy</td>
-        <%end%>
+            <td style="padding-right:10px;color:red;"> <i class="fas fa-triangle-exclamation text-red-500"></i>Warning </td>
+          <%else%>
+            <td style="padding-right:10px;">Healthy</td>
+          <%end%>
       </tr>
     <%end%>
   </tbody>
@@ -82,7 +86,11 @@
       <tr style="text-align:center">
           <td style="padding-right:10px;"><%=i.name %></td>
           <td style="padding-right:10px;"><%=i.brand%></td>
-          <td style="padding-right:10px;"><%=i.quantity%></td>
+          <%if i.box_quantity.present? %>
+            <td style="padding-right:10px;"><%=i.quantity%>(<%=i.box_quantity%>box: <%=i.qty_per_box%>pcs/box)</td>
+          <%else%>
+            <td style="padding-right:10px;"><%=i.quantity%></td>
+          <%end%>
           <td style="padding-right:10px;"><%=i.expiration.strftime("%B #{i.expiration.day.ordinalize}, %Y %I:%S %p")%></td>
           <td style="padding-right:10px;"><%=(i.expiration.to_date - DateTime.now.to_date).to_i%> Days left</td>
       </tr>

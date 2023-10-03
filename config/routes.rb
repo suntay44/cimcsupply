@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   
   get 'scan', to: 'supplies#scan'
   post 'get_barcode', to: 'supplies#get_barcode'
-  
+
   get 'settings', to: 'supplies#departments'
   post 'departments', to: 'supplies#create_department'
 
@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   get '/export', to: 'supplies#export'
 
+  get 'set_new', to: 'supplies#quantity_choose'
   get 'new', to: 'supplies#new'
   post 'new', to: 'supplies#create'
   get 'medical_supplies', to: 'supplies#show_medical_supplies'
